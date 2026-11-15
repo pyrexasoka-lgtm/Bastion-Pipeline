@@ -14,17 +14,6 @@ htmlcov/
 Thumbs.db
 
 .vscode/
-.agents/
-.claude/
-.cursor/
-.windsurf/
-.continue/
-skills/
-prompts/
-CLAUDE.md
-AGENTS.md
-GEMINI.md
-.github/copilot-instructions.md
 
 # build and package output
 build/
@@ -48,3 +37,14 @@ logs/
 # Local secrets
 secrets/
 private/
+
+# Local scan and render output
+zap-out/
+zap-*.log
+rendered/
+coverage.json
+junit.xml
+evidence/
+
+# Jenkins local secrets
+infra/jenkins/secrets/
