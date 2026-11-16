@@ -10,7 +10,7 @@ This project demonstrates secure delivery practices. It is not production ready 
 
 ## Not verified until hosted runs happen
 
-All GitHub workflows were validated locally (actionlint, zizmor, yamllint) and their scripts were executed locally. The following need a push or a tag before they can be PASS: hosted CI runs, the release workflow, keyless signing of a Bastion artifact, the release gate, the `production` environment approval, the OIDC demo with a real token, the DAST demo workflow, scheduled scans, SonarCloud (needs `SONAR_TOKEN`), GitLab CI (needs a GitLab remote), ArgoCD sync and drift healing from GitHub, branch ruleset application and the gate demo pull requests.
+The `ci`, `security`, `windows` and `oidc-demo` workflows passed on GitHub on 2026-11-16 (commit `bdfb847`). The following still need a tag, a secret or another remote before they can be PASS: the release workflow, keyless signing of a Bastion artifact, the release gate, the `production` environment approval, the OIDC denial from a non-main ref, the DAST demo workflow, scheduled scans, SonarCloud (needs `SONAR_TOKEN`), GitLab CI (needs a GitLab remote), ArgoCD sync and drift healing from GitHub, branch ruleset application and the gate demo pull requests.
 
 ## Security limits
 

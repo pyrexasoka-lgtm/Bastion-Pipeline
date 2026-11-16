@@ -1,16 +1,16 @@
 # Control matrix
 
-Requirement, implementation, test, evidence and status. Status words are defined in [the glossary](GLOSSARY.md). Local evidence was produced on 2026-11-15 on Windows 11 with Docker Desktop 29.9. "Hosted" means a GitHub, GitLab or release run, none of which has happened since the audit changes (they are not pushed yet).
+Requirement, implementation, test, evidence and status. Status words are defined in [the glossary](GLOSSARY.md). Local evidence was produced on 2026-11-15 on Windows 11 with Docker Desktop 29.9. "Hosted" means a GitHub, GitLab or release run. The first hosted GitHub runs passed on 2026-11-16 for commit `bdfb847`; release, GitLab and ArgoCD runs have not happened yet.
 
 ## Source and build
 
 | ID | Requirement | Implementation | Test | Evidence | Status |
 | --- | --- | --- | --- | --- | --- |
 | C01 | Sole author, no co-author or tool attribution trailers, Conventional titles | `scripts/hooks/commit-msg`, `scripts/lib/commit-policy.sh`, `.github/allowed-author` | `tests/test_commit_policy.py` (17) | `pytest tests` | PASS |
-| C02 | Same policy in CI on new commits | `scripts/check-authorship.sh` in `ci.yml`, GitLab `policy`, Jenkins stage 1 | Jenkins build 9 | `run_job.py` output | PASS (Jenkins), NOT VERIFIED (hosted) |
+| C02 | Same policy in CI on new commits | `scripts/check-authorship.sh` in `ci.yml`, GitLab `policy`, Jenkins stage 1 | Jenkins build 9; GitHub `ci` run 43815627919 | `run_job.py` output; `policy` job | PASS (Jenkins, hosted) |
 | C03 | Style rules enforced | `scripts/check-style.ps1`, `.style-allow` | `tests/style/check-style.tests.ps1` (6) | Pester 6.2.0 | PASS |
 | C04 | Dependencies hash-locked, runtime separated | `app/requirements*.txt`, `update-signing/requirements.txt` | `test_no_dev_tools_in_image` | `pytest tests/integration -m integration` | PASS |
-| C05 | Lint: ruff, mypy strict, yamllint, actionlint, zizmor, shellcheck, hadolint | `ci.yml` policy, `_build-test.yml` | `validate-pipeline.ps1` | local run | PASS (local), NOT VERIFIED (hosted) |
+| C05 | Lint: ruff, mypy strict, yamllint, actionlint, zizmor, shellcheck, hadolint | `ci.yml` policy, `_build-test.yml` | `validate-pipeline.ps1` | local run; GitHub `ci` run 43815627919 | PASS (local, hosted) |
 | C06 | Tests with coverage at least 85 | `pyproject.toml` `fail_under = 85` | 237 tests | `pytest --cov`: 93.76 percent | PASS |
 | C07 | Security-critical behaviour has negative tests | OIDC, provenance, gate, SBOM, update, firmware, hook, Windows suites | see each row below | | PASS |
 
@@ -34,7 +34,7 @@ Requirement, implementation, test, evidence and status. Status words are defined
 | C22 | Missing prerequisites and inputs fail clearly | same | same | same | PASS |
 | C23 | Interrupted packaging leaves no partial package, temp cleaned | atomic `.partial` rename, `finally` cleanup | same | same | PASS |
 | C24 | Checksum format and tamper detection, path traversal refused | `Write-Checksum`, `Test-Checksum` | same | same | PASS |
-| C25 | `build.bat` propagates exit codes without admin | `windows/build.bat` | Pester and `windows.yml` | Pester | PASS (local), NOT VERIFIED (hosted) |
+| C25 | `build.bat` propagates exit codes without admin | `windows/build.bat` | Pester and `windows.yml` | Pester; GitHub `windows` run 43815627895 | PASS (local, hosted) |
 
 ## CI security
 
@@ -50,7 +50,7 @@ Requirement, implementation, test, evidence and status. Status words are defined
 
 | ID | Requirement | Implementation | Test | Evidence | Status |
 | --- | --- | --- | --- | --- | --- |
-| C40 | SAST | Semgrep (gate), SonarCloud (advisory) | hosted | | NOT VERIFIED |
+| C40 | SAST | Semgrep (gate), SonarCloud (advisory) | hosted | GitHub `security` run 43815627776 | PASS (Semgrep), NOT VERIFIED (SonarCloud skipped, needs `SONAR_TOKEN`) |
 | C41 | Secrets | Gitleaks | `gitleaks git .` | no leaks in history | PASS (local) |
 | C42 | SCA | OSV-Scanner gate, dependency review, Dependency-Check weekly | `osv-scanner` on locks | no issues; jinja2 2.10 demo flagged | PASS (local) |
 | C43 | IaC | Trivy config, kubeconform | `trivy fs --scanners misconfig` | | PASS (local) |
@@ -76,7 +76,7 @@ Requirement, implementation, test, evidence and status. Status words are defined
 | --- | --- | --- | --- | --- | --- |
 | C60 | Algorithm allowlist, JWKS by kid, rotation, claims, policy, masking | `scripts/oidc/verifier.py` | `scripts/oidc/test_verifier.py` (44) | | PASS |
 | C61 | Real JWKS reachable and validated | same | `test_oidc_live.py` | | PASS |
-| C62 | Real token accepted on main, denied elsewhere | `oidc-demo.yml` | hosted | | NOT VERIFIED |
+| C62 | Real token accepted on main, denied elsewhere | `oidc-demo.yml` | hosted | GitHub `oidc-demo` run 43815627785: ACCEPTED on main, wrong audience REJECTED | PASS (main, audience), NOT VERIFIED (other ref) |
 
 ## Deployment
 
