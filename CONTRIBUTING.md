@@ -9,7 +9,7 @@ This is a personal repository. Changes go through a branch, the local checks and
 
 ## Commit rules
 
-- Author and committer must match `.github/allowed-author`.
+- Author and committer must match an identity in `.github/allowed-author`. The first line is the current identity (the GitHub no-reply address); later lines keep older commits valid.
 - Conventional Commit titles, at most 72 characters.
 - No co-author or tool attribution trailers.
 - Never bypass hooks with `--no-verify`.

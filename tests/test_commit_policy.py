@@ -31,9 +31,12 @@ def _find_bash() -> str | None:
 BASH = _find_bash()
 pytestmark = pytest.mark.skipif(BASH is None, reason="bash not available")
 
-GOOD_NAME, GOOD_EMAIL = (
-    (ROOT / ".github/allowed-author").read_text().strip().removesuffix(">").split(" <")
-)
+IDENTITIES = [
+    tuple(line.strip().removesuffix(">").split(" <"))
+    for line in (ROOT / ".github/allowed-author").read_text().splitlines()
+    if line.strip() and not line.lstrip().startswith("#")
+]
+GOOD_NAME, GOOD_EMAIL = IDENTITIES[0]
 
 
 @pytest.fixture
@@ -50,15 +53,21 @@ def repo(tmp_path: Path) -> Path:
     return tmp_path
 
 
-def _hook(repo: Path, message: str, name: str = GOOD_NAME, email: str = GOOD_EMAIL) -> int:
+def _hook(
+    repo: Path,
+    message: str,
+    name: str = GOOD_NAME,
+    email: str = GOOD_EMAIL,
+    committer: tuple[str, str] = (GOOD_NAME, GOOD_EMAIL),
+) -> int:
     msg = repo / "MSG"
     msg.write_text(message, encoding="utf-8")
     env = {
         **os.environ,
         "GIT_AUTHOR_NAME": name,
         "GIT_AUTHOR_EMAIL": email,
-        "GIT_COMMITTER_NAME": GOOD_NAME,
-        "GIT_COMMITTER_EMAIL": GOOD_EMAIL,
+        "GIT_COMMITTER_NAME": committer[0],
+        "GIT_COMMITTER_EMAIL": committer[1],
     }
     assert BASH is not None
     return subprocess.run(
@@ -105,3 +114,12 @@ def test_rejects_wrong_email(repo: Path) -> None:
 
 def test_rejects_wrong_name(repo: Path) -> None:
     assert _hook(repo, "feat: x\n", name="someone-else") == 1
+
+
+@pytest.mark.parametrize("email", ["new@example.com", "old@example.com"])
+def test_accepts_every_listed_identity(repo: Path, email: str) -> None:
+    (repo / ".github/allowed-author").write_text(
+        "# current first, older below\nme <new@example.com>\nme <old@example.com>\n"
+    )
+    assert _hook(repo, "feat: x\n", "me", email, committer=("me", email)) == 0
+    assert _hook(repo, "feat: x\n", "me", "x@example.com", committer=("me", email)) == 1

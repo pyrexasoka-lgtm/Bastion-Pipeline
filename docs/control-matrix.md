@@ -6,7 +6,7 @@ Requirement, implementation, test, evidence and status. Status words are defined
 
 | ID | Requirement | Implementation | Test | Evidence | Status |
 | --- | --- | --- | --- | --- | --- |
-| C01 | Sole author, no co-author or tool attribution trailers, Conventional titles | `scripts/hooks/commit-msg`, `scripts/lib/commit-policy.sh`, `.github/allowed-author` | `tests/test_commit_policy.py` (17) | `pytest tests` | PASS |
+| C01 | Sole author, no co-author or tool attribution trailers, Conventional titles | `scripts/hooks/commit-msg`, `scripts/lib/commit-policy.sh`, `.github/allowed-author` | `tests/test_commit_policy.py` (19) | `pytest tests` | PASS |
 | C02 | Same policy in CI on new commits | `scripts/check-authorship.sh` in `ci.yml`, GitLab `policy`, Jenkins stage 1 | Jenkins build 9; GitHub `ci` run 43815627919 | `run_job.py` output; `policy` job | PASS (Jenkins, hosted) |
 | C03 | Style rules enforced | `scripts/check-style.ps1`, `.style-allow` | `tests/style/check-style.tests.ps1` (6) | Pester 6.2.0 | PASS |
 | C04 | Dependencies hash-locked, runtime separated | `app/requirements*.txt`, `update-signing/requirements.txt` | `test_no_dev_tools_in_image` | `pytest tests/integration -m integration` | PASS |

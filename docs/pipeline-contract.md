@@ -6,7 +6,7 @@ Every CI platform implements the same mandatory stages. Orchestration differs pe
 
 | # | Stage | Inputs | Mandatory checks | Fails when | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Source validation | Commit range | Author and committer match `.github/allowed-author`. Conventional Commit title. No co-author or tool trailers. Style rules. | Any commit violates the policy | Job log of `scripts/check-authorship.sh`, `check-style.ps1` |
+| 1 | Source validation | Commit range | Author and committer match an identity in `.github/allowed-author`. Conventional Commit title. No co-author or tool trailers. Style rules. | Any commit violates the policy | Job log of `scripts/check-authorship.sh`, `check-style.ps1` |
 | 2 | Linting | Source | ruff lint and format, mypy strict, yamllint, actionlint, zizmor, shellcheck, hadolint, PSScriptAnalyzer | Any finding | Job log |
 | 3 | Unit testing | Source, `app/requirements-dev.txt` | pytest, coverage at least 85 percent (line and branch), Pester | A failing test or coverage below 85 | `junit.xml`, `coverage.json`, `pester-results.xml` |
 | 4 | Integration testing | Built image | `tests/integration -m integration` against the running container | Any runtime check fails | Job log |

@@ -4,11 +4,11 @@
 
 policy_root() { git rev-parse --show-toplevel; }
 
-# Prints "name<TAB>email" from .github/allowed-author ("Name <email>").
-allowed_identity() {
-  local line
-  line="$(grep -Ev '^\s*(#|$)' "$(policy_root)/.github/allowed-author" | head -n1)"
-  printf '%s\t%s\n' "$(sed -E 's/^(.*) <.*>$/\1/' <<<"$line")" "$(sed -E 's/^.*<([^>]+)>.*$/\1/' <<<"$line")"
+# Prints one "name<TAB>email" line per identity in .github/allowed-author ("Name <email>").
+# The first identity is the current one; later lines keep older commits valid.
+allowed_identities() {
+  grep -Ev '^\s*(#|$)' "$(policy_root)/.github/allowed-author" | tr -d '\r' \
+    | sed -E 's/^(.*) <([^>]+)>.*$/\1\t\2/'
 }
 
 # Conventional Commit title, plus git-generated Merge and Revert titles.
@@ -30,10 +30,12 @@ check_message() {
   fi
 }
 
-# check_identity <name> <email>: compares against .github/allowed-author.
+# check_identity <name> <email>: passes when the pair matches any identity in .github/allowed-author.
 check_identity() {
-  local want_name want_email
-  IFS=$'\t' read -r want_name want_email < <(allowed_identity)
-  if [[ "$1" != "$want_name" ]]; then echo "Rejected: author name must be $want_name (got '$1')." >&2; return 1; fi
-  if [[ "$2" != "$want_email" ]]; then echo "Rejected: author email does not match .github/allowed-author." >&2; return 1; fi
+  local name email
+  while IFS=$'\t' read -r name email; do
+    [[ "$1" == "$name" && "$2" == "$email" ]] && return 0
+  done < <(allowed_identities)
+  echo "Rejected: author '$1' with this email is not listed in .github/allowed-author." >&2
+  return 1
 }
