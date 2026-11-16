@@ -165,7 +165,8 @@ jobs:
         if: steps.cfg.outputs.enabled == 'true'
         run: |
           python -m pip install --require-hashes --no-deps --only-binary :all: -r app/requirements-dev.txt
-          python -m pytest --cov --cov-report=xml:coverage.xml
+          # --cov=. gives repo-relative paths; per-package roots make __init__.py ambiguous to SonarCloud.
+          python -m pytest --cov=. --cov-report=xml:coverage.xml
       - name: SonarCloud scan with quality gate wait
         if: steps.cfg.outputs.enabled == 'true'
         uses: SonarSource/sonarqube-scan-action@e805d875275f728fac1885b413934be6d7c63f65 # v8.4.1
