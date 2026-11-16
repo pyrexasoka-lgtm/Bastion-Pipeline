@@ -21,7 +21,7 @@ git clone https://github.com/siiick-brain/Bastion-Pipeline.git
 cd Bastion-Pipeline
 git config core.hooksPath scripts/hooks
 python -m venv .venv
-.venv/Scripts/python -m pip install --require-hashes --no-deps -r app/requirements-dev.txt
+.venv/Scripts/python -m pip install --require-hashes --no-deps --only-binary :all: -r app/requirements-dev.txt
 Install-Module Pester -RequiredVersion 6.2.0 -Scope CurrentUser
 Install-Module PSScriptAnalyzer -RequiredVersion 1.25.0 -Scope CurrentUser
 pwsh -File scripts/validate-pipeline.ps1

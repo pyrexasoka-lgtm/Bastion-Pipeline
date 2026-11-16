@@ -20,7 +20,7 @@ variables:
 .python:
   image: $PYTHON_IMAGE
   before_script:
-    - python -m pip install --require-hashes --no-deps -r app/requirements-dev.txt
+    - 'python -m pip install --require-hashes --no-deps --only-binary :all: -r app/requirements-dev.txt'
 
 policy:
   stage: policy

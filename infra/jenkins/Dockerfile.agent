@@ -9,15 +9,15 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends python3 python3-venv git curl ca-certificates \
  && apt-get clean \
  && find /var/lib/apt/lists -type f -delete
-RUN curl -fsSL -o /tmp/gitleaks.tgz https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
+RUN curl --proto '=https' --tlsv1.2 -fsSL -o /tmp/gitleaks.tgz https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
  && echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  /tmp/gitleaks.tgz" | sha256sum -c - \
  && tar -xzf /tmp/gitleaks.tgz -C /usr/local/bin gitleaks \
  && unlink /tmp/gitleaks.tgz \
- && curl -fsSL -o /usr/local/bin/osv-scanner https://github.com/google/osv-scanner/releases/download/v2.2.4/osv-scanner_linux_amd64 \
+ && curl --proto '=https' --tlsv1.2 -fsSL -o /usr/local/bin/osv-scanner https://github.com/google/osv-scanner/releases/download/v2.2.4/osv-scanner_linux_amd64 \
  && echo "7702cd1e5d9f5059dd9570f4ad967f27d3c5f5391b371ec937b384c238177f55  /usr/local/bin/osv-scanner" | sha256sum -c - \
  && chmod 0755 /usr/local/bin/osv-scanner
 COPY requirements-dev.txt /tmp/requirements-dev.txt
 RUN python3 -m venv /opt/venv \
- && /opt/venv/bin/pip install --no-cache-dir --require-hashes --no-deps -r /tmp/requirements-dev.txt \
+ && /opt/venv/bin/pip install --no-cache-dir --require-hashes --no-deps --only-binary=:all: -r /tmp/requirements-dev.txt \
  && chmod -R a+rX /opt/venv
 ENV PATH=/opt/venv/bin:$PATH
