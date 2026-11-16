@@ -2,14 +2,14 @@
 # Hardened image for the notes service. See docs/adr/0004-container-base-image.md.
 # Build and runtime stages come from the same vendor so the Python minor version always matches.
 
-FROM cgr.dev/chainguard/python:latest-dev@sha256:9c338a251c7c0888bbce9fe86fc9174986ea2d9568757b578fc16a41de3dec22 AS build
+FROM cgr.dev/chainguard/python:latest-dev@sha256:e0df0ab3cb72380c82f8c5513538152e822a6d8994252663060adea9fdc450c2 AS build
 WORKDIR /src
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1 PIP_NO_CACHE_DIR=1
 COPY app/requirements.txt ./requirements.txt
 RUN python -m pip install --require-hashes --only-binary=:all: --no-compile --target /home/nonroot/deps -r requirements.txt
 COPY app/__init__.py app/main.py /home/nonroot/out/app/
 
-FROM cgr.dev/chainguard/python:latest@sha256:b194f818c3fbf172c83597753e72561f14f58d22e9ea6bf148b7597246f65c8f AS final
+FROM cgr.dev/chainguard/python:latest@sha256:b969ffa5d847b5acd28bd18b12d5b6631cb69c8289f03b309e19b68608724dc6 AS final
 LABEL org.opencontainers.image.source="https://github.com/siiick-brain/Bastion-Pipeline" \
       org.opencontainers.image.description="Bastion Pipeline notes service" \
       org.opencontainers.image.licenses="MIT"
