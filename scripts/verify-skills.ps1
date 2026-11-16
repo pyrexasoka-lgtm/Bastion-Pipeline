@@ -84,7 +84,7 @@ try {
     Add-CommandRow 5 'Linting and tests with coverage gate' '' {
         & $py -m ruff check . -q; if ($LASTEXITCODE -eq 0) { & $py -m pytest -p no:cacheprovider -q --cov --cov-fail-under=85 } } 'ruff; pytest --cov-fail-under=85'
 
-    Add-Row 6 'SAST: Semgrep and SonarCloud' 'NOT VERIFIED' 'Semgrep runs in security.yml (hosted run pending); SonarCloud needs SONAR_TOKEN'
+    Add-Row 6 'SAST: Semgrep and SonarCloud' 'NOT VERIFIED' 'Hosted only: both PASS in security.yml (control matrix C40); this local script does not query GitHub'
 
     if (Have 'osv-scanner') {
         $osv = Test-Command { osv-scanner scan source --config osv-scanner.toml -L app/requirements.txt -L app/requirements-dev.txt -L update-signing/requirements.txt }

@@ -22,6 +22,10 @@
 - Removed `curl | sh` installers, `|| true` on security steps and a script that produced placeholder screenshot files.
 - Input validation rejects control characters and unknown fields; responses carry security headers.
 - Jenkins agent can no longer read the controller's secrets; the agent host key is pinned.
+- Python dependencies install from wheels only, so no package setup script runs at install time.
+- Jenkins controller configuration and the signing container code are root owned and read only for the runtime user; agent downloads are HTTPS only.
+- The signing image copies an explicit file list, backed by a `.dockerignore` allowlist.
+- Commits use the GitHub no-reply address; the authorship check accepts each listed identity.
 
 ### Added
 

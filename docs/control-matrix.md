@@ -50,7 +50,7 @@ Requirement, implementation, test, evidence and status. Status words are defined
 
 | ID | Requirement | Implementation | Test | Evidence | Status |
 | --- | --- | --- | --- | --- | --- |
-| C40 | SAST | Semgrep (gate), SonarCloud (advisory) | hosted | GitHub `security` run 43815627776 | PASS (Semgrep), NOT VERIFIED (SonarCloud skipped, needs `SONAR_TOKEN`) |
+| C40 | SAST | Semgrep (gate), SonarCloud (advisory) | hosted | GitHub `security` runs 43815627776 (Semgrep) and 43933855306 (SonarCloud quality gate: security, reliability and maintainability A, 0 vulnerabilities, coverage 94.1 percent) | PASS |
 | C41 | Secrets | Gitleaks | `gitleaks git .` | no leaks in history | PASS (local) |
 | C42 | SCA | OSV-Scanner gate, dependency review, Dependency-Check weekly | `osv-scanner` on locks | no issues; jinja2 2.10 demo flagged | PASS (local) |
 | C43 | IaC | Trivy config, kubeconform | `trivy fs --scanners misconfig` | | PASS (local) |

@@ -2,12 +2,12 @@
 
 ## Next (needs the owner)
 
-1. Review and commit the hardening work, then push to `main` so the hosted workflows run.
-2. Create the `production` and `oidc-demo` environments and apply the branch ruleset.
+1. Apply the branch ruleset (`scripts/apply-branch-protection.ps1`).
+2. Merge the open Dependabot base image update.
 3. Push the first tag (`v0.2.0`) and verify the release with [the verify guide](verify.md).
 4. Promote the released digest and verify ArgoCD sync, drift healing and rollback.
 5. Push the gate demo branches and record the red checks.
-6. Optional: add `SONAR_TOKEN`, `NVD_API_KEY` and a GitLab remote.
+6. Optional: add `NVD_API_KEY` and a GitLab remote.
 7. Capture the screenshots in [the screenshot plan](screenshots.md).
 
 ## Planned (deferred ideas)
