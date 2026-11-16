@@ -14,3 +14,7 @@ misconfigurations:
     paths: ["infra/jenkins/Dockerfile.agent"]
     statement: sshd must start as root to drop privileges per session; builds run as the jenkins user. See security/exceptions.toml EX-004.
     expired_at: 2027-05-15
+  - id: AVD-KSV-0125
+    paths: ["rendered/dev.yaml", "rendered/prod.yaml"]
+    statement: Own image on GHCR, pinned by digest and signature verified before promotion. See security/exceptions.toml EX-005.
+    expired_at: 2027-05-15

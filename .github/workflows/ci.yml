@@ -157,4 +157,7 @@ jobs:
           cache: true
 
       - name: Trivy config gate
-        run: trivy config --severity CRITICAL,HIGH,MEDIUM --exit-code 1 rendered deploy infra Dockerfile
+        # Trivy takes a single target. deploy/ is skipped because its rendered output is scanned.
+        run: >-
+          trivy config --severity CRITICAL,HIGH,MEDIUM --exit-code 1
+          --ignorefile .trivyignore.yaml --skip-dirs deploy .

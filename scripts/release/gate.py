@@ -53,6 +53,9 @@ def check_tests(ev: Path) -> Result:
     p = ev / "junit.xml"
     if not p.is_file():
         return Result("Unit tests pass", NOT_VERIFIED, "junit.xml missing")
+    # junit.xml is written by this pipeline's own pytest run; stdlib expat resolves no
+    # external entities and caps entity expansion.
+    # nosemgrep: python.lang.security.use-defused-xml-parse.use-defused-xml-parse
     root = ET.parse(p).getroot()  # noqa: S314
     suites = [root] if root.tag == "testsuite" else list(root.iter("testsuite"))
     total = sum(int(s.get("tests", 0)) for s in suites)

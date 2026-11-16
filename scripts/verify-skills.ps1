@@ -45,6 +45,8 @@ function Test-Command {
 
 function Have { param([string]$Tool) [bool](Get-Command $Tool -ErrorAction SilentlyContinue) }
 
+function Test-Image { param([string]$Ref) & docker image inspect $Ref *> $null; $LASTEXITCODE -eq 0 }
+
 function Add-CommandRow {
     param([int]$N, [string]$Name, [string]$Tool, [scriptblock]$Body, [string]$Command)
     if ($Tool -and -not (Have $Tool)) { Add-Row $N $Name 'NOT VERIFIED' "$Tool not installed"; return }
@@ -109,14 +111,14 @@ try {
     } else { Add-Row 9 'Gitleaks catches the demo secret' 'NOT VERIFIED' 'gitleaks not installed' }
 
     $table = (Get-Content docs/hardening.md -Raw) -match '\| Hardened \|'
-    if ((Have 'trivy') -and (Have 'docker') -and ((& docker image inspect bastion-pipeline:local 2>$null) -ne $null)) {
+    if ((Have 'trivy') -and (Have 'docker') -and (Test-Image 'bastion-pipeline:local')) {
         $t = Test-Command { trivy image --quiet --scanners vuln --severity CRITICAL,HIGH --exit-code 1 bastion-pipeline:local }
         Add-Row 10 'Trivy image scan with before and after table' ($(if ($t.Ok -and $table) { 'PASS' } else { 'FAIL' })) "table in docs/hardening.md: $table; gate on bastion-pipeline:local passed: $($t.Ok)"
     } else { Add-Row 10 'Trivy image scan with before and after table' 'NOT VERIFIED' 'trivy, docker or the local image missing' }
 
     Add-Row 11 'SBOMs valid in both formats' 'NOT VERIFIED' 'validators and digest binding pass on real Syft output (docs/verify.md); release SBOMs need a tag'
 
-    if (-not $SkipSlow -and (Have 'docker') -and ((& docker image inspect bastion-pipeline:local 2>$null) -ne $null)) {
+    if (-not $SkipSlow -and (Have 'docker') -and (Test-Image 'bastion-pipeline:local')) {
         Add-CommandRow 12 'Hardened image runs non-root' '' { & $py -m pytest tests/integration/test_container.py -m integration -q -p no:cacheprovider } 'pytest tests/integration -m integration'
     } else { Add-Row 12 'Hardened image runs non-root' 'NOT VERIFIED' 'docker or bastion-pipeline:local missing (or -SkipSlow)' }
 
@@ -135,7 +137,7 @@ try {
         Add-CommandRow 16 'cosign verify passes and a tampered artifact fails' '' { & $py -m pytest tests/integration/test_supply_chain.py -m network -q -p no:cacheprovider } 'pytest tests/integration/test_supply_chain.py -m network'
     } else { Add-Row 16 'cosign verify passes and a tampered artifact fails' 'NOT VERIFIED' '-SkipSlow' }
 
-    if (-not $SkipSlow -and (Have 'docker') -and ((& docker image inspect bastion-update-signing:local 2>$null) -ne $null)) {
+    if (-not $SkipSlow -and (Have 'docker') -and (Test-Image 'bastion-update-signing:local')) {
         Add-CommandRow 17 'SoftHSM signing, verification and negative cases' '' {
             docker run --rm --read-only --tmpfs /tmp:rw,mode=1777 --tmpfs /home/signer:rw,uid=10001,gid=10001 --cap-drop ALL --security-opt no-new-privileges bastion-update-signing:local } 'docker run bastion-update-signing:local'
     } else {

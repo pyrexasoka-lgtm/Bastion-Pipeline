@@ -159,6 +159,8 @@ def test_modified_payload_breaks_signature(cache: v.JwksCache) -> None:
     "token_factory",
     [
         lambda: _token(_claims(), key="shared-secret-shared-secret-32by", alg="HS256"),
+        # Negative test: an unsigned "none" token must be rejected.
+        # nosemgrep: python.jwt.security.jwt-none-alg.jwt-python-none-alg
         lambda: jwt.encode(_claims(), None, algorithm="none", headers={"kid": "kid-a"}),  # type: ignore[arg-type]
         lambda: _token(_claims(), key=ec.generate_private_key(ec.SECP256R1()), alg="ES256"),
         lambda: _token(_claims(), alg="RS512"),

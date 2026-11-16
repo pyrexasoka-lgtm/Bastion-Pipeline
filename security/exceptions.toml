@@ -41,3 +41,13 @@ risk = "Medium: an sshd vulnerability would run as root inside the agent contain
 owner = "siiick-brain"
 expires = "2027-05-15"
 compensating = "Agent is reachable only on the internal Compose network; host key pinned; controller secrets masked."
+
+[[exception]]
+id = "EX-005"
+finding = "AVD-KSV-0125 (image from a registry outside Trivy's default trusted list)"
+scope = "Rendered dev and prod overlays (rendered/*.yaml), image ghcr.io/siiick-brain/bastion-pipeline"
+reason = "The project publishes its own image to GHCR. Trivy's built-in trusted registry list does not include ghcr.io."
+risk = "Low: the image is referenced by digest, so a registry compromise cannot swap its content without changing the reference."
+owner = "siiick-brain"
+expires = "2027-05-15"
+compensating = "cosign verifies the keyless signature and provenance of the digest before promotion (scripts/promote.ps1, docs/verify.md)."
