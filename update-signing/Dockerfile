@@ -18,5 +18,8 @@ ENV PATH=/opt/venv/bin:$PATH \
     PYTHONDONTWRITEBYTECODE=1
 USER 10001:10001
 WORKDIR /work
-COPY --chown=10001:10001 . /work
+# Explicit list (also enforced by the .dockerignore allowlist): nothing else in this folder is copied.
+COPY --chown=10001:10001 build_update.py verify_update.py init-token.sh run-demo.sh /work/
+COPY --chown=10001:10001 bastion_update/ /work/bastion_update/
+COPY --chown=10001:10001 tests/ /work/tests/
 ENTRYPOINT ["/work/run-demo.sh"]
