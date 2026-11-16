@@ -7,7 +7,8 @@ requires-python = ">=3.11"
 [tool.pytest.ini_options]
 testpaths = [
   "tests", "app/test_main.py", "update-signing/tests", "firmware-sim/tests",
-  "scripts/oidc/test_verifier.py", "scripts/release/test_*.py",
+  "scripts/oidc/test_verifier.py", "scripts/release/test_gate.py",
+  "scripts/release/test_sbom_check.py", "scripts/release/test_verify_provenance.py",
 ]
 addopts = "-q --strict-markers -m \"not integration and not network\""
 pythonpath = [".", "update-signing", "firmware-sim"]

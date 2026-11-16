@@ -143,7 +143,8 @@ def verify_token(token: str, policy: Policy, keys: JwksCache) -> dict[str, Any]:
     if not isinstance(token, str) or token.count(".") != 2 or len(token) > 16_384:
         raise VerificationError("malformed token")
     try:
-        header = jwt.get_unverified_header(token)
+        # Read only to choose the key (kid) and check alg; jwt.decode below verifies the signature.
+        header = jwt.get_unverified_header(token)  # NOSONAR
     except jwt.PyJWTError as exc:
         raise VerificationError("malformed token header") from exc
     alg = header.get("alg")

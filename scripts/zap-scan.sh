@@ -18,7 +18,9 @@ case "$mode" in
 esac
 
 mkdir -p zap-out
-chmod 0777 zap-out
+# The ZAP container runs as its own uid and must write its report here. The folder is a
+# disposable output directory that holds no input the scan trusts.
+chmod 0777 zap-out # NOSONAR
 host_dir="$PWD/zap-out"
 if command -v cygpath >/dev/null 2>&1; then
   # Git Bash on Windows: stop path mangling and give Docker a Windows path.
