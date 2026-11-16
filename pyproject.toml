@@ -5,7 +5,10 @@ description = "Secure delivery pipeline demonstration"
 requires-python = ">=3.11"
 
 [tool.pytest.ini_options]
-testpaths = ["app", "tests", "update-signing", "firmware-sim", "scripts"]
+testpaths = [
+  "tests", "app/test_main.py", "update-signing/tests", "firmware-sim/tests",
+  "scripts/oidc/test_verifier.py", "scripts/release/test_*.py",
+]
 addopts = "-q --strict-markers -m \"not integration and not network\""
 pythonpath = [".", "update-signing", "firmware-sim"]
 markers = ["integration: needs Docker and a built image", "network: needs internet and cosign"]
