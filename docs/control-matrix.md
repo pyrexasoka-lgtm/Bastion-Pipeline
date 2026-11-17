@@ -62,12 +62,12 @@ Requirement, implementation, test, evidence and status. Status words are defined
 | ID | Requirement | Implementation | Test | Evidence | Status |
 | --- | --- | --- | --- | --- | --- |
 | C50 | SBOMs in both formats bound to the digest | Syft, `sbom_check.py` | `test_sbom_check.py` (12), real Syft output | cyclonedx-cli and pyspdxtools pass, corrupted copies fail | PASS (local) |
-| C51 | Keyless signing by digest | `release.yml` build job | hosted | | NOT VERIFIED |
+| C51 | Keyless signing by digest | `release.yml` build job | hosted | GitHub release run 43983071969; independent `cosign verify` of `v0.2.0` | PASS |
 | C52 | Identity and issuer verification | `verify-release.sh` | `test_supply_chain.py` (real Sigstore) | 5 identity cases | PASS (local) |
 | C53 | Provenance subject, workflow, ref, commit, runner | `verify_provenance.py` | `test_verify_provenance.py` (21, real attestation) | | PASS |
 | C54 | Tampered artifact fails | `verify-release.sh` negative controls | `test_modified_blob_fails_signature` | | PASS (local) |
 | C55 | Release gate blocks on FAIL or NOT VERIFIED | `gate.py` | `test_gate.py` (26) | | PASS |
-| C56 | Required reviewer on production | environment `production` | manual | | NOT VERIFIED |
+| C56 | Required reviewer on production | environment `production` | manual | GitHub release run 43983071969: gate waited until the owner approved | PASS |
 | C57 | Branch ruleset with dry run, confirmation, verification | `apply-branch-protection.ps1` | dry run against the real repository | | PASS (dry run), NOT VERIFIED (apply) |
 
 ## OIDC

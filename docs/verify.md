@@ -2,7 +2,7 @@
 
 A signature alone is not proof of origin. Verification must establish what was signed (the digest), who signed it (the release workflow identity and issuer) and which build produced it (provenance: repository, workflow, ref, commit, runner). The release `verify` job runs all of this with `scripts/verify-release.sh` and the gate refuses to publish unless it passes.
 
-Status: the commands below are verified against real Sigstore data (see "Evidence"). A full run against a Bastion release is NOT VERIFIED until the first tag is pushed.
+Status: the commands below are verified against real Sigstore data (see "Evidence"). Release `v0.2.0` (image `sha256:706f6b48b24903b5b8e97bcc70e3619a682acd41ab0fb9667a2be9ac52ec3c00`, commit `128bf3f`) passed the release `verify` job and an independent run of every command below on 2026-11-17.
 
 ## Variables
 
@@ -65,7 +65,8 @@ cosign verify-blob SHA256SUMS --bundle SHA256SUMS.sigstore.json --certificate-id
 | Modified blob fails signature verification | same, `test_modified_blob_fails_signature` | 2026-11-15 | PASS |
 | Provenance policy on a real GitHub attestation (GitHub CLI v2.104.0) | `pytest scripts/release/test_verify_provenance.py` | 2026-11-15 | PASS, with 10 tampered and 5 policy-mismatch cases rejected |
 | Real Syft SBOMs validate (cyclonedx-cli, pyspdxtools) and a corrupted copy fails | manual run, see [control matrix](control-matrix.md) | 2026-11-15 | PASS |
-| Full release verification | release `verify` job | | NOT VERIFIED (no tag pushed) |
+| Full release verification of `v0.2.0` | release `verify` job, GitHub release run 43983071969 | 2026-11-16 | PASS (8 controls in `verify.json`) |
+| Independent verification of `v0.2.0` from a separate machine (steps 1 to 4, tampered checksums, wrong identity) | commands above, cosign 3.1.4, GitHub CLI | 2026-11-17 | PASS (9 checks, both negative cases rejected) |
 
 ## Reproducible builds
 
