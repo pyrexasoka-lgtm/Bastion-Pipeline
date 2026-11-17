@@ -116,7 +116,7 @@ try {
         Add-Row 10 'Trivy image scan with before and after table' ($(if ($t.Ok -and $table) { 'PASS' } else { 'FAIL' })) "table in docs/hardening.md: $table; gate on bastion-pipeline:local passed: $($t.Ok)"
     } else { Add-Row 10 'Trivy image scan with before and after table' 'NOT VERIFIED' 'trivy, docker or the local image missing' }
 
-    Add-Row 11 'SBOMs valid in both formats' 'NOT VERIFIED' 'validators and digest binding pass on real Syft output (docs/verify.md); release SBOMs need a tag'
+    Add-Row 11 'SBOMs valid in both formats' 'NOT VERIFIED' 'Hosted only: v0.2.0 release SBOMs PASS schema and digest binding (docs/verify.md); this local script does not query GitHub'
 
     if (-not $SkipSlow -and (Have 'docker') -and (Test-Image 'bastion-pipeline:local')) {
         Add-CommandRow 12 'Hardened image runs non-root' '' { & $py -m pytest tests/integration/test_container.py -m integration -q -p no:cacheprovider } 'pytest tests/integration -m integration'
@@ -128,7 +128,7 @@ try {
         $app = & kubectl -n argocd get application bastion-dev -o 'jsonpath={.status.sync.status}/{.status.health.status}' 2>$null
         if ($LASTEXITCODE -eq 0 -and $app) {
             Add-Row 14 'ArgoCD Synced and Healthy, drift healed' ($(if ($app -eq 'Synced/Healthy') { 'NOT VERIFIED' } else { 'FAIL' })) "Application: $app; drift: run verify-deployment.ps1"
-        } else { Add-Row 14 'ArgoCD Synced and Healthy, drift healed' 'NOT VERIFIED' 'Application bastion-dev not present (needs pushed overlay and release)' }
+        } else { Add-Row 14 'ArgoCD Synced and Healthy, drift healed' 'NOT VERIFIED' 'Application bastion-dev not present (apply infra/argocd/application.yaml after the promotion commit is pushed)' }
     } else { Add-Row 14 'ArgoCD Synced and Healthy, drift healed' 'NOT VERIFIED' 'kubectl not installed' }
 
     Add-CommandRow 15 'Release gates block a failing condition' '' { & $py -m pytest scripts/release/test_gate.py -q -p no:cacheprovider } 'pytest scripts/release/test_gate.py'
