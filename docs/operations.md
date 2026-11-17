@@ -37,7 +37,7 @@ pwsh -File scripts/validate-pipeline.ps1
 | Local deployment demo | `pwsh -File scripts/kind-demo.ps1` |
 | Jenkins | `bash infra/jenkins/setup.sh` then `python infra/jenkins/run_job.py --url http://127.0.0.1:8080` |
 | Signed update demo | see [PKCS#11 and SoftHSM](pkcs11-softhsm.md) |
-| Release | `git tag -s v0.2.0 && git push origin v0.2.0`, then approve the `production` gate |
+| Release | `git tag -a v0.2.0 -m v0.2.0 && git push origin v0.2.0` (use `-s` instead of `-a` when Git has a signing key), then approve the `production` gate |
 | Promote a release | `pwsh -File scripts/promote.ps1 -Image <image@digest> -Tag <tag>` |
 | Branch ruleset | `pwsh -File scripts/apply-branch-protection.ps1` (dry run), then `-Apply` |
 | Gate demonstrations | `pwsh -File scripts/make-gate-demos.ps1` |

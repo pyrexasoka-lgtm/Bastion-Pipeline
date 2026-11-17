@@ -37,12 +37,14 @@ pwsh -File scripts/verify-deployment.ps1 -Overlay dev -Tag v0.2.0
 
 | Check | Date | Result |
 | --- | --- | --- |
-| Overlays render, kubeconform strict | 2026-11-15 | PASS locally (`kubectl kustomize`), CI job NOT VERIFIED |
+| Overlays render, kubeconform strict | 2026-11-16 | PASS locally and in the hosted `manifests` job (GitHub `ci` run 43815627919 onwards) |
 | Local end to end on kind (`kind-demo.ps1`) | 2026-11-15 | PASS, see [deployment verification](deployment-verification.md) |
 | ArgoCD installed with a verified manifest hash | 2026-11-15 | PASS |
-| ArgoCD Synced and Healthy for `bastion-dev` | | NOT VERIFIED: needs the overlay pushed to GitHub and a released digest |
+| Release `v0.2.0` promoted with a verified keyless signature (`promote.ps1`); a wrong tag is refused | 2026-11-17 | PASS |
+| Promoted overlay applied to kind: image pulled anonymously from GHCR, Pod Security `restricted`, `/health` and `POST /notes` answer | 2026-11-17 | PASS |
+| ArgoCD Synced and Healthy for `bastion-dev` | | NOT VERIFIED: needs the promotion commit pushed to GitHub |
 | Drift healed | | NOT VERIFIED (same reason) |
-| Rollback by `git revert` | | NOT VERIFIED (same reason) |
+| Rollback by `git revert` | | NOT VERIFIED: needs a second release to roll back from |
 
 ## Limits
 
