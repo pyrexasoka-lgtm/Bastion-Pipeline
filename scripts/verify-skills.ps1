@@ -74,7 +74,7 @@ try {
     } else { Add-Row 3 'Jenkinsfile runs locally' 'NOT VERIFIED' 'Jenkins not set up (infra/jenkins/setup.sh)' }
 
     $pester = Test-Command {
-        $c = New-PesterConfiguration; $c.Run.Path = @('windows/tests', 'tests/style'); $c.Output.Verbosity = 'None'; $c.Run.PassThru = $true
+        $c = New-PesterConfiguration; $c.Run.Path = @('windows/tests', 'tests/style', 'tests/promote'); $c.Output.Verbosity = 'None'; $c.Run.PassThru = $true
         $res = Invoke-Pester -Configuration $c
         "passed $($res.PassedCount) failed $($res.FailedCount) $(($res.Failed | ForEach-Object { $_.ExpandedPath + ": " + ($_.ErrorRecord | Select-Object -First 1) }) -join "; ")"
         if ($res.FailedCount -gt 0) { $global:LASTEXITCODE = 1 }

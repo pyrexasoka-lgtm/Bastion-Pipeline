@@ -52,8 +52,9 @@ if ($LASTEXITCODE -ne 0) { throw "cosign verification FAILED for $Image. Nothing
 Write-Host 'Signature verified.'
 
 $text = [System.IO.File]::ReadAllText($kustomization)
-$updated = [regex]::Replace($text, '(?m)^(\s*newName:\s*).*$', "`${1}$name")
-$updated = [regex]::Replace($updated, '(?m)^(\s*digest:\s*)sha256:[0-9a-f]{64}\s*$', "`${1}$digest")
+# [ \t] rather than \s: \s also matches line breaks and would eat the final newline.
+$updated = [regex]::Replace($text, '(?m)^([ \t]*newName:[ \t]*).*$', "`${1}$name")
+$updated = [regex]::Replace($updated, '(?m)^([ \t]*digest:[ \t]*)sha256:[0-9a-f]{64}[ \t]*$', "`${1}$digest")
 if ($updated -notmatch [regex]::Escape($digest)) { throw "Could not find an images digest entry in $kustomization" }
 
 if ($PSCmdlet.ShouldProcess($kustomization, "set image $name@$digest")) {

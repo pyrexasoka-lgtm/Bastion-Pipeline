@@ -44,7 +44,7 @@ if (-not $SkipChecks) {
     Write-Host 'PSScriptAnalyzer: no findings.'
 
     $config = New-PesterConfiguration
-    $config.Run.Path = @((Join-Path $repoRoot 'windows/tests'), (Join-Path $repoRoot 'tests/style'))
+    $config.Run.Path = @((Join-Path $repoRoot 'windows/tests'), (Join-Path $repoRoot 'tests/style'), (Join-Path $repoRoot 'tests/promote'))
     $config.Run.PassThru = $true
     $config.Output.Verbosity = 'Detailed'
     $config.TestResult.Enabled = $true
