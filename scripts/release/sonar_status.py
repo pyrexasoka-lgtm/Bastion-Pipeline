@@ -60,7 +60,8 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
     try:
         result = status_for(project_key(args.properties), args.revision, https_json)
-    except (OSError, ValueError, KeyError) as exc:
+    # Advisory control: any unreadable reply leaves it NOT VERIFIED and never fails the release.
+    except (OSError, ValueError, KeyError, AttributeError, TypeError) as exc:
         print(f"SonarCloud status unavailable ({type(exc).__name__}); control stays NOT VERIFIED")
         return 0
     if result is None:

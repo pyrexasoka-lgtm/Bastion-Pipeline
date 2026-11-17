@@ -58,3 +58,12 @@ def test_main_writes_nothing_when_unreachable(
     out = tmp_path / "sonarcloud.txt"
     assert sonar_status.main(["--revision", SHA, "--out", str(out)]) == 0
     assert not out.exists()
+
+
+def test_main_writes_nothing_on_an_unexpected_reply(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(sonar_status, "https_json", lambda url: ["not", "an", "object"])
+    out = tmp_path / "sonarcloud.txt"
+    assert sonar_status.main(["--revision", SHA, "--out", str(out)]) == 0
+    assert not out.exists()
