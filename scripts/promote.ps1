@@ -60,5 +60,5 @@ if ($updated -notmatch [regex]::Escape($digest)) { throw "Could not find an imag
 if ($PSCmdlet.ShouldProcess($kustomization, "set image $name@$digest")) {
     [System.IO.File]::WriteAllText($kustomization, $updated)
     if (Test-Path (Join-Path $RepoRoot '.git')) { & git -C $RepoRoot --no-pager diff -- $kustomization }
-    Write-Host "Promoted $digest to overlay '$Overlay'. Review, then commit with: git commit -m 'deploy($Overlay): promote $($digest.Substring(7,12))'"
+    Write-Host "Promoted $digest to overlay '$Overlay'. Review, then commit with: git commit -m 'chore($Overlay): promote $($digest.Substring(7,12))'"
 }

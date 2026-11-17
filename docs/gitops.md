@@ -22,7 +22,7 @@ After the first GitHub release:
 
 ```powershell
 pwsh -File scripts/promote.ps1 -Image ghcr.io/siiick-brain/bastion-pipeline@sha256:<digest> -Tag v0.2.0
-git commit -am "deploy(dev): promote <digest prefix>"
+git commit -am "chore(dev): promote <digest prefix>"
 git push
 kubectl apply -f infra/argocd/application.yaml
 pwsh -File scripts/verify-deployment.ps1 -Overlay dev -Tag v0.2.0
