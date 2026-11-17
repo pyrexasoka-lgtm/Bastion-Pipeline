@@ -245,6 +245,8 @@ jobs:
         with:
           name: verify-evidence
           path: evidence
+      - name: SonarCloud quality gate for this commit (advisory)
+        run: python -m scripts.release.sonar_status --revision "$GITHUB_SHA" --out evidence/sonarcloud.txt
       - name: Evaluate gate
         run: python -m scripts.release.gate evidence --summary gate-summary.md
       - name: Publish gate summary

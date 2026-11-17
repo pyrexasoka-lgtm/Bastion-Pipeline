@@ -15,7 +15,7 @@ The `gate` job in `.github/workflows/release.yml` runs `python -m scripts.releas
 | SBOM attestations verified | yes | `verify.json` | Both attestation types verify |
 | Windows checksums signature verified | yes | `verify.json` | `cosign verify-blob` and `sha256sum -c` |
 | Tampered artifact rejected | yes | `verify.json` | Tampered blob, wrong identity and wrong issuer all fail |
-| SonarCloud quality gate | no | `sonarcloud.txt` | Reported, never blocks |
+| SonarCloud quality gate | no | `sonarcloud.txt` | Written by `scripts/release/sonar_status.py` from the SonarCloud analysis of the released commit. Reported, never blocks; missing when SonarCloud has no analysis or is unreachable |
 
 ## Evidence
 

@@ -9,6 +9,7 @@ testpaths = [
   "tests", "app/test_main.py", "update-signing/tests", "firmware-sim/tests",
   "scripts/oidc/test_verifier.py", "scripts/release/test_gate.py",
   "scripts/release/test_sbom_check.py", "scripts/release/test_verify_provenance.py",
+  "scripts/release/test_sonar_status.py",
 ]
 addopts = "-q --strict-markers -m \"not integration and not network\""
 pythonpath = [".", "update-signing", "firmware-sim"]
