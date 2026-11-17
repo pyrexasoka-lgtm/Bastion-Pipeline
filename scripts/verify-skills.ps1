@@ -148,7 +148,7 @@ try {
 
     $hyg = Test-Command {
         & $bash scripts/check-authorship.sh '810355f..HEAD'
-        if ($LASTEXITCODE -eq 0 -and (Have 'gitleaks')) { gitleaks git . --no-banner --redact }
+        if ($LASTEXITCODE -eq 0 -and (Have 'gitleaks')) { gitleaks git . --log-opts=HEAD --no-banner --redact }
         if ($LASTEXITCODE -eq 0) { pwsh -NoProfile -File scripts/check-style.ps1 }
     }
     Add-Row 19 'Hygiene: authors, trailers, tooling files, gitleaks, style' ($(if ($hyg.Ok) { 'PASS' } else { 'FAIL' })) "authorship since baseline, gitleaks history, style: $($hyg.Last)"

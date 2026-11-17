@@ -68,7 +68,7 @@ gitleaks:
     name: ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f
     entrypoint: [""]
   script:
-    - gitleaks git . --redact --no-banner --exit-code 1
+    - gitleaks git . --log-opts=HEAD --redact --no-banner --exit-code 1
 
 osv:
   stage: security
