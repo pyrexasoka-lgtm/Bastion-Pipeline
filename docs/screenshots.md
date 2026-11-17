@@ -1,6 +1,16 @@
 # Screenshots
 
-Screenshots must show real executions. None are committed yet, so every screenshot is NOT VERIFIED. Images go in `docs/images/`.
+Screenshots must show real executions. Images go in `docs/images/`.
+
+## Captured
+
+Headless Microsoft Edge captures of the public pages, taken 2026-11-17 without signing in.
+
+| Image | Shows | Source |
+| --- | --- | --- |
+| [release-job-graph](images/release-job-graph.png) | Release `v0.2.0`: every job green, the job graph and the `production` approval by the owner | GitHub release run 43983071969 |
+| [release-assets](images/release-assets.png) | Release `v0.2.0` page with the image digest and its nine assets | `releases/tag/v0.2.0` |
+| [actions-overview](images/actions-overview.png) | Workflow runs on `main`, the tag and a Dependabot pull request | `actions` |
 
 ## Capture plan
 
@@ -8,8 +18,8 @@ Screenshots must show real executions. None are committed yet, so every screensh
 | --- | --- | --- |
 | hardening-table, tests-green, cosign-verify, oidc-claims, softhsm-signing, firmware-sim, deployment-verification, secret-scan | Terminal output of the commands in each document | NOT VERIFIED |
 | argocd-synced, argocd-drift-healed, jenkins-stages, zap-report, zap-juice-demo | Local web pages | NOT VERIFIED |
-| actions-overview, ci-job-graph, code-scanning, sonarcloud-gate, gitleaks-blocked-pr, vuln-dependency-blocked-pr, release-assets, gitlab-pipeline, windows-job-log, oidc-denied, readme-top | Public GitHub and GitLab pages after hosted runs | NOT VERIFIED |
-| branch-ruleset, production-approval | Manual, steps below | NOT VERIFIED |
+| code-scanning, sonarcloud-gate, gitleaks-blocked-pr, vuln-dependency-blocked-pr, gitlab-pipeline, windows-job-log, oidc-denied, readme-top | Public GitHub and GitLab pages after hosted runs (job logs and code scanning need a signed-in browser; the SonarCloud page does not render headless) | NOT VERIFIED |
+| branch-ruleset, production-approval | Manual, steps below (the approval record of `v0.2.0` is visible in release-job-graph; the review dialog itself appears again with the next release) | NOT VERIFIED |
 
 ## Manual: branch-ruleset
 

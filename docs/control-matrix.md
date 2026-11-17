@@ -114,4 +114,4 @@ Requirement, implementation, test, evidence and status. Status words are defined
 | C100 | No fabricated evidence | `screenshot-prep.ps1` (wrote fake PNGs) removed | review | | PASS |
 | C101 | No secrets committed | Gitleaks | history scan | | PASS |
 | C102 | Fresh-clone reproduction | `operations.md` first setup | clean clone, new virtual environment, `validate-pipeline.ps1` | 2026-11-17, commit `6ddf9ee`: 17 of 17 checks PASS (clone of the local repository; a clone from GitHub follows the push) | PASS |
-| C103 | Screenshots of real runs | `docs/screenshots.md` | | | NOT VERIFIED |
+| C103 | Screenshots of real runs | `docs/screenshots.md` | headless browser capture of public pages | 2026-11-17: release job graph with the production approval, release assets, Actions overview | PASS (3 images), NOT VERIFIED (remaining plan) |
